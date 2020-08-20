@@ -8,21 +8,22 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import cl.desafiolatam.desafiodos.orm.Task
 import cl.desafiolatam.desafiodos.task.OnItemClickListener
 import cl.desafiolatam.desafiodos.task.TaskListAdapter
-import cl.desafiolatam.desafiodos.task.TaskUIDataHolder
 import cl.desafiolatam.desafiodos.view_model.TaskViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.add_task.view.*
 
 class MainActivity : AppCompatActivity(), OnItemClickListener {
-    override fun onItemClick(taskItem: TaskUIDataHolder) {
+    override fun onItemClick(taskItem: Task) {
         val dialogView = layoutInflater.inflate(R.layout.add_task, null)
         val taskText = dialogView.task_input
-        taskText.setText(taskItem.text)
+        taskText.setText(taskItem.homework)
         val dialogBuilder = AlertDialog
             .Builder(this)
             .setTitle("Editar una Tarea")
@@ -49,12 +50,13 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         setUpViews()
         //inicializar lo necesario para usar la base de datos
         viewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
+        viewModel.allTaskList.observe(this, Observer { adapter.updateData(it) })
     }
 
     override fun onResume() {
         super.onResume()
         AsyncTask.execute {
-            val newItems = mutableListOf<TaskUIDataHolder>()
+            val newItems = mutableListOf<Task>()
             runOnUiThread {
                 adapter.updateData(newItems)
             }
@@ -83,7 +85,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         list.adapter = adapter
     }
 
-    private fun updateEntity(taskItem: TaskUIDataHolder, newText: String) {
+    private fun updateEntity(taskItem: Task, newText: String) {
         //completar método para actualizar una tarea en la base de datos
     }
 
@@ -121,8 +123,8 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         //completar este método para retornar un Entity
     }
 
-    private fun createEntityListFromDatabase(/* párametro de entrada*/): MutableList<TaskUIDataHolder> {
-        val dataList = mutableListOf<TaskUIDataHolder>()
+    private fun createEntityListFromDatabase(/* párametro de entrada*/): MutableList<Task> {
+        val dataList = mutableListOf<Task>()
         //completar método para crear una lista de datos compatibles con el adaptador, mire lo que
         //retorna el método. Este método debe recibir un parámetro también.
         return dataList
