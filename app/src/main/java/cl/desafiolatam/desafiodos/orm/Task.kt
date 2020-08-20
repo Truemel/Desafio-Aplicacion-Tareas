@@ -5,5 +5,5 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "tareas")
-class Task(@PrimaryKey(autoGenerate = true) @NonNull val id:Short, val homework:String) {
+data class Task(@PrimaryKey(autoGenerate = true) @NonNull val id:Short, val homework:String) {
 }

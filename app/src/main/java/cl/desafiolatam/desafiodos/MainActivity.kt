@@ -8,11 +8,13 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cl.desafiolatam.desafiodos.task.OnItemClickListener
 import cl.desafiolatam.desafiodos.task.TaskListAdapter
 import cl.desafiolatam.desafiodos.task.TaskUIDataHolder
+import cl.desafiolatam.desafiodos.view_model.TaskViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.add_task.view.*
 
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
     private lateinit var list: RecyclerView
     private lateinit var adapter: TaskListAdapter
     // crear las variables para utilizar la base de datos
+    private lateinit var viewModel: TaskViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +48,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         setSupportActionBar(toolbar)
         setUpViews()
         //inicializar lo necesario para usar la base de datos
+        viewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
     }
 
     override fun onResume() {

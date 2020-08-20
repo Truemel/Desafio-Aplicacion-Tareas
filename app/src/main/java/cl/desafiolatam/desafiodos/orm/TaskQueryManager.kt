@@ -1,24 +1,20 @@
 package cl.desafiolatam.desafiodos.orm
 
-import androidx.room.Delete
-import androidx.room.Query
-import androidx.room.Update
+import androidx.lifecycle.LiveData
 
 class TaskQueryManager(val dao: TaskDAO) {
 
-    fun insertTask(task:Task){
+    val allTasksList:LiveData<MutableList<Task>> = dao.getAllTasks()
+
+    suspend fun insertTask(task:Task){
         dao.insertTask(task)
     }
 
-    fun updateTask(task: Task){
+    suspend fun updateTask(task: Task){
         dao.updateTask(task)
     }
 
-    fun deleteAll(){
+    suspend fun deleteAll(){
         dao.deleteAll()
-    }
-
-    fun getAllTasks():MutableList<Task>{
-        return dao.getAllTasks()
     }
 }

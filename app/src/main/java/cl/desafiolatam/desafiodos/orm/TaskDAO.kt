@@ -1,18 +1,19 @@
 package cl.desafiolatam.desafiodos.orm
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
 interface TaskDAO {
     @Insert
-    fun insertTask(task:Task)
+    suspend fun insertTask(task:Task)
 
     @Update
-    fun updateTask(task: Task)
+    suspend fun updateTask(task: Task)
 
     @Delete
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Query("SELECT * FROM tareas")
-    fun getAllTasks():MutableList<Task>
+    fun getAllTasks():LiveData<MutableList<Task>>
 }
